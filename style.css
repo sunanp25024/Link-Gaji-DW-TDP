@@ -1,0 +1,268 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%); /* Teal gradient */
+    margin: 0;
+    padding: 20px;
+    color: #37474f; /* Blue Grey */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 850px;
+    width: 100%;
+    margin: 20px;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 20px;
+}
+
+.logo {
+    max-width: 150px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    margin: 0;
+    color: #004d40; /* Dark Teal */
+    font-size: 28px;
+    font-weight: 700;
+}
+
+h2 {
+    color: #00695c; /* Teal */
+    border-bottom: 2px solid #b2dfdb;
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.page {
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+fieldset {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+    background-color: #fdfdfd;
+    transition: all 0.3s ease;
+}
+
+fieldset:hover {
+    border-color: #80cbc4;
+}
+
+legend {
+    font-weight: 600;
+    color: #004d40;
+    padding: 0 15px;
+    font-size: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #00796b;
+    box-shadow: 0 0 8px rgba(0, 121, 107, 0.2);
+    outline: none;
+}
+
+input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.button, button {
+    background: linear-gradient(45deg, #00796b, #00897b);
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 121, 107, 0.3);
+}
+
+.button:hover, button:hover {
+    background: linear-gradient(45deg, #00897b, #00796b);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 121, 107, 0.4);
+}
+
+.button.secondary {
+    background: #4db6ac; /* Light Teal */
+    box-shadow: 0 4px 15px rgba(77, 182, 172, 0.3);
+}
+
+.button.secondary:hover {
+    background: #26a69a;
+    box-shadow: 0 6px 20px rgba(77, 182, 172, 0.4);
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.whatsapp-button {
+    background-color: #25D366;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none; /* Hidden by default */
+}
+
+#review-content {
+    background-color: #e0f2f1;
+    border: 1px solid #b2dfdb;
+    border-radius: 8px;
+    padding: 25px;
+    line-height: 1.7;
+}
+
+#review-content h3 {
+    color: #004d40;
+    margin-top: 0;
+    border-bottom: 2px solid #80cbc4;
+    padding-bottom: 10px;
+}
+
+#review-content p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+#review-content strong {
+    color: #333;
+}
+
+.hidden-group {
+    display: none;
+}
+
+#page3 {
+    text-align: center;
+    padding: 40px 20px;
+#page3 {
+    text-align: center;
+}
+
+#page3 h2 {
+    color: #4CAF50; /* Green */
+}
+
+.success-icon {
+    margin-bottom: 20px;
+}
+
+.success-icon svg {
+    fill: #4CAF50;
+}   font-size: 32px;
+    font-weight: 700;
+}
+
+#page3 p {
+    font-size: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button, button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-group .button:last-child {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "google-sheets-backend",
+  "version": "1.0.0",
+  "description": "Backend server to handle form submissions and upload to Google Sheets and Drive.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "google-spreadsheet": "^4.1.1",
+    "googleapis": "^126.0.1",
+    "multer": "^1.4.5-lts.1"
+  }
+}
