@@ -251,11 +251,26 @@ const SCOPES = [
   'https://www.googleapis.com/auth/drive.file',
 ];
 
+// Check if required environment variables are set
+function validateEnvironmentVariables() {
+    const requiredVars = ['PROJECT_ID', 'PRIVATE_KEY_ID', 'PRIVATE_KEY', 'CLIENT_EMAIL', 'CLIENT_ID', 'CLIENT_X509_CERT_URL'];
+    const missingVars = requiredVars.filter(varName => !process.env[varName]);
+    
+    if (missingVars.length > 0) {
+        console.error('Missing required environment variables:', missingVars.join(', '));
+        console.error('Please check your .env file and ensure all Google Service Account credentials are properly set.');
+        process.exit(1);
+    }
+}
+
+// Validate environment variables before proceeding
+validateEnvironmentVariables();
+
 const credentials = {
     type: "service_account",
     project_id: process.env.PROJECT_ID,
     private_key_id: process.env.PRIVATE_KEY_ID,
-    private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+    private_key: process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY.replace(/\\n/g, '\n') : '',
     client_email: process.env.CLIENT_EMAIL,
     client_id: process.env.CLIENT_ID,
     auth_uri: "https://accounts.google.com/o/oauth2/auth",
