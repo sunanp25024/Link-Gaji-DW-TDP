@@ -16,7 +16,7 @@
         <!-- Page 1: Form Input -->
         <form id="payroll-form">
             <div class="page current" id="page1">
-                <h2>Langkah 1: Isi Data Diri</h2>
+                <h2>Isi Data Lengkap</h2>
                 <fieldset>
                     <legend>Informasi Diri</legend>
                     <div class="form-group">
@@ -120,9 +120,8 @@
                         <input type="text" id="kewarganegaraan" name="kewarganegaraan" required>
                     </div>
                 </fieldset>
-            </div>
 
-            <div class="page hidden" id="page2">
+                <!-- Kontak -->
                 <fieldset>
                     <legend>Kontak</legend>
                     <div class="form-group">
@@ -139,6 +138,7 @@
                     </div>
                 </fieldset>
 
+                <!-- Pendidikan -->
                 <fieldset>
                     <legend>Pendidikan</legend>
                     <div class="form-group">
@@ -182,9 +182,8 @@
                         <input type="text" id="ipk" name="ipk" required>
                     </div>
                 </fieldset>
-            </div>
 
-            <div class="page hidden" id="page3">
+                <!-- Kontak Darurat -->
                 <fieldset>
                     <legend>Informasi Kontak Darurat</legend>
                     <div class="form-group">
@@ -196,7 +195,7 @@
                         <input type="tel" id="no-hp-darurat" name="no-hp-darurat" required>
                     </div>
                     <div class="form-group">
-                        <label for="no-wa-darurat">No WhatsApp Kontak Darurat</label>
+                        <label for="no-wa-darurat">No WhatsApp Aktif Kontak Darurat</label>
                         <input type="tel" id="no-wa-darurat" name="no-wa-darurat" required>
                     </div>
                     <div class="form-group">
@@ -217,6 +216,7 @@
                     </div>
                 </fieldset>
 
+                <!-- Bank -->
                 <fieldset>
                     <legend>Informasi Bank</legend>
                     <div class="form-group">
@@ -256,9 +256,8 @@
                         <input type="text" id="nama-penerima" name="nama-penerima" required>
                     </div>
                 </fieldset>
-            </div>
 
-            <div class="page hidden" id="page4">
+                <!-- Informasi Tambahan -->
                 <fieldset>
                     <legend>Informasi Tambahan</legend>
                     <div class="form-group">
@@ -279,6 +278,7 @@
                     </div>
                 </fieldset>
 
+                <!-- Upload Dokumen -->
                 <fieldset>
                     <legend>Upload Dokumen</legend>
                     <div class="form-group">
@@ -298,18 +298,16 @@
                         <input type="file" id="foto-selfie" name="foto-selfie" accept="image/*" required>
                     </div>
                 </fieldset>
-
-                </fieldset>
             </div>
 
-            <!-- Page 5: Review -->
-            <div class="page hidden" id="page5">
+            <!-- Page 2: Review -->
+            <div class="page hidden" id="page2">
                 <h2>Langkah 2: Review Jawaban Anda</h2>
                 <div id="review-content"></div>
             </div>
 
-            <!-- Page 6: Success -->
-            <div class="page hidden" id="page6">
+            <!-- Page 3: Success -->
+            <div class="page hidden" id="page3">
                 <div class="success-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="80px" height="80px">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>

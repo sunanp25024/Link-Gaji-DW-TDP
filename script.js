@@ -69,10 +69,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             if (validatePage(currentPageIndex)) {
-                if (currentPageIndex < pages.length - 2) {
+                if (currentPageIndex < 2) {
                     currentPageIndex++;
                     showPage(currentPageIndex);
-                    if (currentPageIndex === pages.length - 2) {
+                    if (currentPageIndex === 1) {
                         populateReview();
                     }
                 }
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (response.ok) {
                     saveNik(nik);
-                    showPage(pages.length - 1);
+                    showPage(2); // halaman success adalah index 2
                     const nama = document.getElementById('nama').value;
                     const waLink = document.getElementById('whatsapp-link');
                     const message = `Halo, saya ${nama} sudah mengisi form penggajian. Mohon diproses. Terima kasih.`;
@@ -146,11 +146,11 @@ document.addEventListener('DOMContentLoaded', function() {
             page.classList.toggle('hidden', i !== index);
         });
         currentPageIndex = index;
-        const isReviewPage = pages[currentPageIndex].id === 'page' + (pages.length - 2);
-        const isSuccessPage = pages[currentPageIndex].id === 'page' + (pages.length - 1);
+        const isReviewPage = index === 1; // page2 adalah review
+        const isSuccessPage = index === 2; // page3 adalah success
 
         if (prevBtn) prevBtn.style.display = (index > 0 && !isSuccessPage) ? 'inline-block' : 'none';
-        if (nextBtn) nextBtn.style.display = (index < pages.length - 2 && !isSuccessPage) ? 'inline-block' : 'none';
+        if (nextBtn) nextBtn.style.display = (index < 1 && !isSuccessPage) ? 'inline-block' : 'none';
         if (submitBtn) submitBtn.style.display = isReviewPage ? 'inline-block' : 'none';
         if (dummyBtn) dummyBtn.style.display = (index === 0) ? 'inline-block' : 'none';
     }
