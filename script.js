@@ -241,7 +241,8 @@ function fillWithDummyData() {
     document.getElementById('jenis-kelamin').value = 'Laki-laki';
     document.getElementById('agama').value = 'Islam';
     document.getElementById('status-perkawinan').value = 'Belum Menikah';
-    document.getElementById('alamat').value = 'Jl. Sudirman No. 123, Jakarta';
+    document.getElementById('alamat-ktp').value = 'Jl. Sudirman No. 123, Jakarta';
+    document.getElementById('alamat-domisili').value = 'Jl. Sudirman No. 123, Jakarta';
     document.getElementById('no-hp').value = '+6281234567890';
     document.getElementById('no-wa').value = '+6281234567890';
     document.getElementById('email').value = 'budi.santoso@example.com';
@@ -251,7 +252,7 @@ function fillWithDummyData() {
     document.getElementById('nama-bank').value = 'BCA';
     document.getElementById('nama-bank').dispatchEvent(new Event('change'));
     document.getElementById('no-rekening').value = '1234567890';
-    document.getElementById('pemilik-rekening').value = 'Budi Santoso';
+    // Pemilik rekening field doesn't exist in current form structure
     document.getElementById('nama-kontak-darurat').value = 'Siti';
     document.getElementById('hubungan-kontak-darurat').value = 'Saudara Kandung';
     document.getElementById('no-hp-darurat').value = '+6281987654321';
