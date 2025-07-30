@@ -123,6 +123,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById('submit-btn');
     if (submitBtn) {
         submitBtn.addEventListener('click', async function() {
+            // Validasi halaman review sebelum submit
+            const currentPageId = document.querySelector('.page:not(.hidden)').id;
+            
+            // Jika di halaman review, validasi halaman pertama juga
+            if (currentPageId === 'page2') {
+                if (!validatePage('page1')) {
+                    // Kembali ke halaman 1 jika validasi gagal
+                    showPage('page1');
+                    return;
+                }
+            }
+            
             const form = document.getElementById('payroll-form');
             const formData = new FormData(form);
 
@@ -215,8 +227,18 @@ function fillWithDummyData() {
 }
 
 function nextPage(pageId) {
-    // Panggil populateReview() tanpa validasi untuk tujuan peninjauan
-    populateReview();
+    // Validasi halaman saat ini sebelum melanjutkan
+    const currentPageId = document.querySelector('.page:not(.hidden)').id;
+    
+    if (!validatePage(currentPageId)) {
+        return; // Jangan lanjut jika validasi gagal
+    }
+    
+    // Jika akan ke halaman review, populate review content
+    if (pageId === 'page2') {
+        populateReview();
+    }
+    
     showPage(pageId);
 }
 
@@ -266,24 +288,60 @@ function validatePage(pageId) {
         console.error('Validation failed: Page element not found for id', pageId);
         return false;
     }
+    
     const inputs = page.querySelectorAll('input[required], select[required], textarea[required]');
     let isValid = true;
+    let emptyFields = [];
+    
     console.log(`Validating page: ${pageId}`);
+    
     inputs.forEach(input => {
+        // Reset border color
+        input.style.borderColor = '#ccc';
+        
+        // Check if field is empty
         if (!input.value.trim()) {
             isValid = false;
-            console.log(`Validation failed for input: ${input.id || input.name}, value: '${input.value}'`);
+            const label = document.querySelector(`label[for='${input.id}']`);
+            const fieldName = label ? label.innerText.replace('*', '').trim() : input.id;
+            emptyFields.push(fieldName);
             input.style.borderColor = 'red';
-        } else {
-            input.style.borderColor = '#ccc';
+            console.log(`Validation failed for input: ${input.id || input.name}, value: '${input.value}'`);
+        }
+        
+        // Special validation for file inputs
+        if (input.type === 'file' && input.hasAttribute('required')) {
+            if (!input.files || input.files.length === 0) {
+                isValid = false;
+                const label = document.querySelector(`label[for='${input.id}']`);
+                const fieldName = label ? label.innerText.replace('*', '').trim() : input.id;
+                if (!emptyFields.includes(fieldName)) {
+                    emptyFields.push(fieldName);
+                }
+                input.style.borderColor = 'red';
+            }
         }
     });
+    
     if (!isValid) {
-        alert('Harap isi semua bidang yang wajib diisi.');
+        let message = 'Harap isi semua bidang yang wajib diisi:\n\n';
+        emptyFields.forEach((field, index) => {
+            message += `${index + 1}. ${field}\n`;
+        });
+        alert(message);
+        
+        // Scroll to first empty field
+        const firstEmptyInput = page.querySelector('input[style*="red"], select[style*="red"], textarea[style*="red"]');
+        if (firstEmptyInput) {
+            firstEmptyInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstEmptyInput.focus();
+        }
+        
         console.log(`Validation result for ${pageId}: FAILED`);
     } else {
         console.log(`Validation result for ${pageId}: PASSED`);
     }
+    
     return isValid;
 }
 

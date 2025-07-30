@@ -13,6 +13,12 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('.'));
+
+// Serve the main page
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 // Multer setup for file uploads
 const upload = multer();
