@@ -114,6 +114,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     body: formData,
                 });
 
+                const result = await response.json();
+                
                 if (response.ok) {
                     saveNik(nik);
                     showPage(2); // halaman success adalah index 2
@@ -122,13 +124,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const message = `Halo, saya ${nama} sudah mengisi form penggajian. Mohon diproses. Terima kasih.`;
                     waLink.href = `https://wa.me/6285156776329?text=${encodeURIComponent(message)}`;
                 } else {
-                    const errorResult = await response.json();
-                    console.error('Submission failed:', errorResult);
-                    alert(`Error: ${errorResult.message}`);
+                    console.error('Submission failed:', result);
+                    
+                    // Display validation errors in a more user-friendly way
+                    if (result.errors && Array.isArray(result.errors)) {
+                        const errorMessage = `${result.message}:\n\n${result.errors.join('\n')}`;
+                        alert(errorMessage);
+                    } else {
+                        alert(`Error: ${result.message || 'Terjadi kesalahan yang tidak diketahui'}`);
+                    }
                 }
             } catch (error) {
                 console.error('Error submitting form:', error);
-                alert('Terjadi kesalahan saat mengirim form. Silakan coba lagi.');
+                alert('Terjadi kesalahan jaringan. Periksa koneksi internet Anda dan coba lagi.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Kirim';
