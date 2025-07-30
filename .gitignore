@@ -1,3 +1,4 @@
 node_modules/
 credentials.json
 .env
+# .env.example should be committed to show required environment variables
