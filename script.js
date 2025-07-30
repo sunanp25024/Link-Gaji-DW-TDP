@@ -44,20 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const form = document.getElementById('payroll-form');
-    const nikInput = document.getElementById('nik');
-
-    if (nikInput) {
-        nikInput.addEventListener('input', function() {
-            const nik = this.value;
-            if (nik.length === 16) {
-                if (isDuplicateNik(nik)) {
-                    alert('NIK sudah terdaftar!');
-                    this.value = '';
-                    return;
-                }
-            }
-        });
-    }
 
     const pages = document.querySelectorAll('.page');
     let currentPageIndex = 0;
@@ -96,13 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!validateForm()) {
                 return;
             }
-            
-            const nik = document.getElementById('nik').value;
-            if (isDuplicateNik(nik)) {
-                alert('NIK sudah terdaftar!');
-                return;
-            }
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Mengirim...';
 
@@ -117,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
                 
                 if (response.ok) {
-                    saveNik(nik);
                     showPage(2); // halaman success adalah index 2
                     const nama = document.getElementById('nama').value;
                     const waLink = document.getElementById('whatsapp-link');
@@ -126,8 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     console.error('Submission failed:', result);
                     
-                    // Display validation errors in a more user-friendly way
-                    if (result.errors && Array.isArray(result.errors)) {
+                    // Handle different types of errors
+                    if (response.status === 409) {
+                        // NIK duplicate error
+                        alert('NIK yang Anda masukkan sudah terdaftar dalam sistem. Silakan periksa kembali atau hubungi admin jika ini adalah kesalahan.');
+                    } else if (result.errors && Array.isArray(result.errors)) {
+                        // Other validation errors
                         const errorMessage = `${result.message}:\n\n${result.errors.join('\n')}`;
                         alert(errorMessage);
                     } else {
@@ -353,15 +336,4 @@ function populateReview() {
     
     html += '</ul>';
     reviewContent.innerHTML = html;
-}
-
-function isDuplicateNik(nik) {
-    const savedNiks = JSON.parse(localStorage.getItem('submittedNiks') || '[]');
-    return savedNiks.includes(nik);
-}
-
-function saveNik(nik) {
-    const savedNiks = JSON.parse(localStorage.getItem('submittedNiks') || '[]');
-    savedNiks.push(nik);
-    localStorage.setItem('submittedNiks', JSON.stringify(savedNiks));
 }

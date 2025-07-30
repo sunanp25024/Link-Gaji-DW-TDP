@@ -12,7 +12,12 @@ const app = express();
 const port = process.env.PORT || 3002;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('.'));
@@ -253,7 +258,7 @@ const SCOPES = [
 
 // Check if required environment variables are set
 function validateEnvironmentVariables() {
-    const requiredVars = ['PROJECT_ID', 'PRIVATE_KEY_ID', 'PRIVATE_KEY', 'CLIENT_EMAIL', 'CLIENT_ID', 'CLIENT_X509_CERT_URL'];
+    const requiredVars = ['PROJECT_ID', 'PRIVATE_KEY_ID', 'PRIVATE_KEY', 'CLIENT_EMAIL', 'CLIENT_ID', 'CLIENT_X509_CERT_URL', 'FRONTEND_URL'];
     const missingVars = requiredVars.filter(varName => !process.env[varName]);
     
     if (missingVars.length > 0) {
@@ -317,6 +322,21 @@ async function uploadToDrive(file, auth) {
     return response.data.webViewLink;
 }
 
+async function checkDuplicateNIK(nik) {
+    try {
+        const doc = await getSpreadsheet();
+        const sheet = doc.sheetsByIndex[0];
+        const rows = await sheet.getRows();
+        
+        // Check if NIK already exists
+        const existingNIK = rows.find(row => row.get('nik') === nik);
+        return !!existingNIK;
+    } catch (error) {
+        console.error('Error checking duplicate NIK:', error);
+        throw new Error('Gagal memeriksa duplikasi NIK');
+    }
+}
+
 app.post('/submit', upload.any(), async (req, res) => {
     try {
         const formData = req.body;
@@ -344,6 +364,16 @@ app.post('/submit', upload.any(), async (req, res) => {
             return res.status(400).json({
                 message: 'File yang diunggah tidak valid',
                 errors: fileErrors
+            });
+        }
+        
+        // Check for duplicate NIK
+        const isDuplicate = await checkDuplicateNIK(formData.nik);
+        if (isDuplicate) {
+            console.log('Duplicate NIK detected:', formData.nik);
+            return res.status(409).json({
+                message: 'NIK sudah terdaftar dalam sistem',
+                errors: ['NIK yang Anda masukkan sudah terdaftar. Silakan periksa kembali atau hubungi admin jika ini adalah kesalahan.']
             });
         }
 
