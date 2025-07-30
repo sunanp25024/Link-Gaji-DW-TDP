@@ -149,10 +149,34 @@ document.addEventListener('DOMContentLoaded', function() {
         const isReviewPage = index === 1; // page2 adalah review
         const isSuccessPage = index === 2; // page3 adalah success
 
-        if (prevBtn) prevBtn.style.display = (index > 0 && !isSuccessPage) ? 'inline-block' : 'none';
-        if (nextBtn) nextBtn.style.display = (index < 1 && !isSuccessPage) ? 'inline-block' : 'none';
-        if (submitBtn) submitBtn.style.display = isReviewPage ? 'inline-block' : 'none';
-        if (dummyBtn) dummyBtn.style.display = (index === 0) ? 'inline-block' : 'none';
+        if (prevBtn) {
+            if (index > 0 && !isSuccessPage) {
+                prevBtn.classList.remove('hidden');
+            } else {
+                prevBtn.classList.add('hidden');
+            }
+        }
+        if (nextBtn) {
+            if (index < 1 && !isSuccessPage) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.add('hidden');
+            }
+        }
+        if (submitBtn) {
+            if (isReviewPage) {
+                submitBtn.classList.remove('hidden');
+            } else {
+                submitBtn.classList.add('hidden');
+            }
+        }
+        if (dummyBtn) {
+            if (index === 0) {
+                dummyBtn.classList.remove('hidden');
+            } else {
+                dummyBtn.classList.add('hidden');
+            }
+        }
     }
 
     function validatePage(index) {

@@ -7,7 +7,7 @@ const { google } = require('googleapis');
 const stream = require('stream');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3002;
 
 // Middleware
 app.use(cors());

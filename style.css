@@ -54,6 +54,12 @@ h2 {
     font-weight: 600;
 }
 
+/* Navigation button visibility */
+#prev-btn.hidden,
+#submit-btn.hidden {
+    display: none;
+}
+
 .page {
     padding: 20px;
 }
