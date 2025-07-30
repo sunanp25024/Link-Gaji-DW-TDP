@@ -79,6 +79,23 @@ function validateYear(year) {
     return null;
 }
 
+function validateAccountNumber(bankName, accountNumber) {
+    if (!bankName || !accountNumber) {
+        return 'Bank dan nomor rekening wajib diisi';
+    }
+    
+    const bankPattern = bankAccountPatterns[bankName];
+    if (!bankPattern) {
+        return `Bank "${bankName}" tidak dikenali`;
+    }
+    
+    if (!bankPattern.pattern.test(accountNumber)) {
+        return bankPattern.message;
+    }
+    
+    return null;
+}
+
 function validateFormData(formData) {
     const errors = [];
     
@@ -177,6 +194,10 @@ function validateFormData(formData) {
         const yearError = validateYear(formData['tahun-lulus']);
         if (yearError) errors.push(`Tahun Lulus: ${yearError}`);
     }
+    
+    // Validate account number based on selected bank
+    const accountError = validateAccountNumber(formData['nama-bank'], formData['no-rekening']);
+    if (accountError) errors.push(accountError);
     
     // Validate conditional fields
     if (formData['agama'] === 'Lainnya') {
@@ -287,6 +308,26 @@ const credentials = {
 
 const SPREADSHEET_ID = '1BNhyJfE2ejqAAXes1gz6HaBd2KijtG86xkGA1AbxXDY';
 const DRIVE_FOLDER_ID = '1aqeH-9T7ttRSxL1OwMIVm7uc_AYT6nzQ';
+
+// Bank account number validation patterns (server-side)
+const bankAccountPatterns = {
+    'BCA': { pattern: /^\d{10}$/, message: 'Nomor rekening BCA harus 10 digit angka' },
+    'Mandiri': { pattern: /^\d{13}$/, message: 'Nomor rekening Mandiri harus 13 digit angka' },
+    'BRI': { pattern: /^\d{15}$/, message: 'Nomor rekening BRI harus 15 digit angka' },
+    'BNI': { pattern: /^\d{10}$/, message: 'Nomor rekening BNI harus 10 digit angka' },
+    'CIMB Niaga': { pattern: /^\d{10,13}$/, message: 'Nomor rekening CIMB Niaga harus 10-13 digit angka' },
+    'BTN': { pattern: /^\d{16}$/, message: 'Nomor rekening BTN harus 16 digit angka' },
+    'Danamon': { pattern: /^\d{10,16}$/, message: 'Nomor rekening Danamon harus 10-16 digit angka' },
+    'Permata': { pattern: /^\d{9,16}$/, message: 'Nomor rekening Permata harus 9-16 digit angka' },
+    'Maybank': { pattern: /^\d{10,12}$/, message: 'Nomor rekening Maybank harus 10-12 digit angka' },
+    'Panin': { pattern: /^\d{10}$/, message: 'Nomor rekening Panin harus 10 digit angka' },
+    'OCBC NISP': { pattern: /^\d{12}$/, message: 'Nomor rekening OCBC NISP harus 12 digit angka' },
+    'UOB': { pattern: /^\d{10}$/, message: 'Nomor rekening UOB harus 10 digit angka' },
+    'HSBC': { pattern: /^\d{10,12}$/, message: 'Nomor rekening HSBC harus 10-12 digit angka' },
+    'Standard Chartered': { pattern: /^\d{10,16}$/, message: 'Nomor rekening Standard Chartered harus 10-16 digit angka' },
+    'Bank Mega': { pattern: /^\d{10}$/, message: 'Nomor rekening Bank Mega harus 10 digit angka' },
+    'Bank Syariah Indonesia': { pattern: /^\d{10}$/, message: 'Nomor rekening Bank Syariah Indonesia harus 10 digit angka' }
+};
 
 async function getAuth() {
     const jwt = new JWT({

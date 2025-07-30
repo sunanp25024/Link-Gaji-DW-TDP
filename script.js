@@ -1,4 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Bank account number validation patterns
+    const bankAccountPatterns = {
+        'BCA': { pattern: /^\d{10}$/, message: 'Nomor rekening BCA harus 10 digit angka' },
+        'Mandiri': { pattern: /^\d{13}$/, message: 'Nomor rekening Mandiri harus 13 digit angka' },
+        'BRI': { pattern: /^\d{15}$/, message: 'Nomor rekening BRI harus 15 digit angka' },
+        'BNI': { pattern: /^\d{10}$/, message: 'Nomor rekening BNI harus 10 digit angka' },
+        'CIMB Niaga': { pattern: /^\d{10,13}$/, message: 'Nomor rekening CIMB Niaga harus 10-13 digit angka' },
+        'BTN': { pattern: /^\d{16}$/, message: 'Nomor rekening BTN harus 16 digit angka' },
+        'Danamon': { pattern: /^\d{10,16}$/, message: 'Nomor rekening Danamon harus 10-16 digit angka' },
+        'Permata': { pattern: /^\d{9,16}$/, message: 'Nomor rekening Permata harus 9-16 digit angka' },
+        'Maybank': { pattern: /^\d{10,12}$/, message: 'Nomor rekening Maybank harus 10-12 digit angka' },
+        'Panin': { pattern: /^\d{10}$/, message: 'Nomor rekening Panin harus 10 digit angka' },
+        'OCBC NISP': { pattern: /^\d{12}$/, message: 'Nomor rekening OCBC NISP harus 12 digit angka' },
+        'UOB': { pattern: /^\d{10}$/, message: 'Nomor rekening UOB harus 10 digit angka' },
+        'HSBC': { pattern: /^\d{10,12}$/, message: 'Nomor rekening HSBC harus 10-12 digit angka' },
+        'Standard Chartered': { pattern: /^\d{10,16}$/, message: 'Nomor rekening Standard Chartered harus 10-16 digit angka' },
+        'Bank Mega': { pattern: /^\d{10}$/, message: 'Nomor rekening Bank Mega harus 10 digit angka' },
+        'Bank Syariah Indonesia': { pattern: /^\d{10}$/, message: 'Nomor rekening Bank Syariah Indonesia harus 10 digit angka' }
+    };
+
     const tanggalLahirInput = document.getElementById('tanggal-lahir');
     
     if (tanggalLahirInput) {
@@ -38,6 +58,51 @@ document.addEventListener('DOMContentLoaded', function() {
     setupLainnya('status-perkawinan', 'status-perkawinan-lainnya-group');
     setupLainnya('tingkat-pendidikan', 'pendidikan-lainnya-group');
     setupLainnya('hubungan-kontak-darurat', 'hubungan-lainnya-group');
+
+    // Setup bank account validation
+    const bankSelect = document.getElementById('nama-bank');
+    const accountNumberInput = document.getElementById('no-rekening');
+    const accountNumberError = document.getElementById('no-rekening-error');
+
+    if (bankSelect && accountNumberInput) {
+        bankSelect.addEventListener('change', function() {
+            const selectedBank = this.value;
+            if (selectedBank && bankAccountPatterns[selectedBank]) {
+                const pattern = bankAccountPatterns[selectedBank];
+                accountNumberInput.setAttribute('data-bank', selectedBank);
+                accountNumberInput.setAttribute('data-pattern', pattern.pattern.source);
+                accountNumberInput.setAttribute('data-message', pattern.message);
+                
+                // Clear previous error when bank changes
+                if (accountNumberError) {
+                    accountNumberError.style.display = 'none';
+                    accountNumberError.textContent = '';
+                }
+            }
+        });
+
+        // Validate account number on input
+        accountNumberInput.addEventListener('input', function() {
+            const selectedBank = bankSelect.value;
+            const accountNumber = this.value.trim();
+            
+            if (selectedBank && accountNumber && bankAccountPatterns[selectedBank]) {
+                const pattern = bankAccountPatterns[selectedBank];
+                const isValid = pattern.pattern.test(accountNumber);
+                
+                if (accountNumberError) {
+                    if (!isValid && accountNumber.length > 0) {
+                        accountNumberError.textContent = pattern.message;
+                        accountNumberError.style.display = 'block';
+                        accountNumberError.style.color = '#e74c3c';
+                    } else {
+                        accountNumberError.style.display = 'none';
+                        accountNumberError.textContent = '';
+                    }
+                }
+            }
+        });
+    }
 
     document.querySelectorAll('.hidden-group').forEach(group => {
         group.classList.add('hidden-group');
@@ -173,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePage(index) {
         const page = pages[index];
         const inputs = Array.from(page.querySelectorAll('input[required], select[required], textarea[required]'));
+        
         for (const input of inputs) {
             if (input.offsetParent === null) continue;
 
@@ -183,6 +249,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.focus();
                 return false;
             }
+            
+            // Special validation for account number
+            if (input.id === 'no-rekening') {
+                const bankSelect = document.getElementById('nama-bank');
+                const selectedBank = bankSelect ? bankSelect.value : '';
+                const accountNumber = input.value.trim();
+                
+                if (selectedBank && accountNumber && bankAccountPatterns[selectedBank]) {
+                    const pattern = bankAccountPatterns[selectedBank];
+                    if (!pattern.pattern.test(accountNumber)) {
+                        alert(pattern.message);
+                        input.focus();
+                        return false;
+                    }
+                }
+            }
+            
             if (input.pattern && !new RegExp(input.pattern).test(input.value)) {
                 const label = document.querySelector(`label[for='${input.id}']`);
                 const labelText = label ? label.innerText : (input.name || input.id);
@@ -243,6 +326,19 @@ function fillWithDummyData() {
     document.getElementById('nama-bank').value = 'BCA';
     document.getElementById('nama-bank').dispatchEvent(new Event('change'));
     document.getElementById('no-rekening').value = '1234567890';
+    document.getElementById('nama-penerima').value = 'Budi Santoso';
+    document.getElementById('rt-rw').value = '001/002';
+    document.getElementById('no-rumah').value = '123';
+    document.getElementById('kelurahan').value = 'Menteng';
+    document.getElementById('kecamatan').value = 'Menteng';
+    document.getElementById('kota').value = 'Jakarta Pusat';
+    document.getElementById('kode-pos').value = '10310';
+    document.getElementById('kewarganegaraan').value = 'Indonesia';
+    document.getElementById('tahun-masuk').value = '2008';
+    document.getElementById('tahun-lulus').value = '2012';
+    document.getElementById('ipk').value = '3.50';
+    document.getElementById('nama-ibu').value = 'Siti Aminah';
+    document.getElementById('nama-ayah').value = 'Ahmad Santoso';
     // Pemilik rekening field doesn't exist in current form structure
     document.getElementById('nama-kontak-darurat').value = 'Siti';
     document.getElementById('hubungan-kontak-darurat').value = 'Saudara Kandung';
